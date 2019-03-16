@@ -1,4 +1,0 @@
-﻿  main.cpp
-e:\project\ttf-parser\ttf-parser\main.cpp(22): warning C4244: “初始化”: 从“std::streamoff”转换到“int”，可能丢失数据
-  TTF-Parser.vcxproj -> E:\project\TTF-Parser\x64\Debug\TTF-Parser.exe
-  TTF-Parser.vcxproj -> E:\project\TTF-Parser\x64\Debug\TTF-Parser.pdb (Partial PDB)
