@@ -48,7 +48,7 @@ namespace TTFParser
 	struct Glyph
 	{
 		int16_t glyph_index;
-		int16_t countour_num;
+		int16_t contour_num;
 		uint16_t advance_width;
 		int16_t left_side_bearing;
 		int16_t bounding_box[4];
@@ -70,9 +70,7 @@ namespace TTFParser
 	{
 	public:
 		TTFGlyph(const CMapTable & cmap_table , 
-			const MaxpTable & maxp , 
 			const LocaTable & loca , 
-			const HHEATable & hhea , 
 			int glyf_offset,
 			int hmtx_offset,
 			wchar_t w_c,

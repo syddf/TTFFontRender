@@ -3,10 +3,8 @@
 
 using namespace TTFParser;
 
-TTFGlyph::TTFGlyph(const CMapTable & cmap_table, const MaxpTable & maxp, 
-	const LocaTable & loca, const HHEATable & hhea, int glyf_offset , int hmtx_offset , wchar_t w_c, char * data )
+TTFGlyph::TTFGlyph(const CMapTable & cmap_table, const LocaTable & loca, int glyf_offset , int hmtx_offset , wchar_t w_c, char * data )
 {
-		int glyph_num = maxp.GetNumGlyphs();
 		int offset;
 		
 		uint32_t ind = (uint32_t)w_c;
@@ -26,29 +24,26 @@ TTFGlyph::TTFGlyph(const CMapTable & cmap_table, const MaxpTable & maxp,
 
 void TTFGlyph::LoadGlyph(int i , char * data, int & offset)
 {
-	TRead(data, &m_Glyph.countour_num, offset);
+	TRead(data, &m_Glyph.contour_num, offset);
 	TRead(data, &m_Glyph.bounding_box[0], offset);
 	TRead(data, &m_Glyph.bounding_box[1], offset);
 	TRead(data, &m_Glyph.bounding_box[2], offset);
 	TRead(data, &m_Glyph.bounding_box[3], offset);
-	if (i == 5)
-	{
-		int c = 0;
-	}
+
 	Point_f glyph_center;
 	glyph_center.x = (m_Glyph.bounding_box[0] + m_Glyph.bounding_box[2]) / 2.0f;
 	glyph_center.y = (m_Glyph.bounding_box[1] + m_Glyph.bounding_box[3]) / 2.0f;
 
-	if (m_Glyph.countour_num > 0)
+	if (m_Glyph.contour_num > 0)
 	{
-		std::vector<uint16_t> countour_end(m_Glyph.countour_num);
-		m_Glyph.countour_list.resize(m_Glyph.countour_num);
-		for (int j = 0; j < m_Glyph.countour_num; j++)
+		std::vector<uint16_t> countour_end(m_Glyph.contour_num);
+		m_Glyph.countour_list.resize(m_Glyph.contour_num);
+		for (int j = 0; j < m_Glyph.contour_num; j++)
 		{
 			TRead(data, &countour_end[j], offset);
 		}
 
-		int point_nums = countour_end[m_Glyph.countour_num - 1] + 1;
+		int point_nums = countour_end[m_Glyph.contour_num - 1] + 1;
 
 		uint16_t instruction_num;
 		std::vector<std::vector<uint16_t>> point_index_in_countour;
@@ -59,7 +54,7 @@ void TTFGlyph::LoadGlyph(int i , char * data, int & offset)
 
 		std::vector<GlyphFlag> glyph_flags(point_nums);
 
-		int c_num = m_Glyph.countour_num;
+		int c_num = m_Glyph.contour_num;
 		point_index_in_countour.resize( c_num , std::vector<uint16_t>());
 		for (int i = 0; i < c_num; i++)
 		{
@@ -154,7 +149,7 @@ void TTFGlyph::LoadGlyph(int i , char * data, int & offset)
 
 		//curves
 		//one point in the curve + one point off the curve + one point in the curve
-		for (int j = 0; j < m_Glyph.countour_num; j++)
+		for (int j = 0; j < m_Glyph.contour_num; j++)
 		{
 			uint16_t point_num = j ?  countour_end[j] - countour_end[j - 1] : countour_end[j] + 1 ;
 			uint16_t first_point_ind = point_index_in_countour[j][0];

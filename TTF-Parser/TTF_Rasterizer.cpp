@@ -23,7 +23,7 @@ void TTFRaster::Rasterize()
 		buffer = new unsigned char[WIDTH * HEIGHT * 3];
 	}
 	memset(flag, NotProcess, sizeof(flag));
-	int countour_num = m_Glyph.countour_num;
+	int countour_num = m_Glyph.contour_num;
 	int width = (m_Glyph.bounding_box[2] - m_Glyph.bounding_box[0]) ;
 	int height = (m_Glyph.bounding_box[3] - m_Glyph.bounding_box[1]);
 	int x_delta = (WIDTH - width) / 2;
@@ -62,7 +62,7 @@ void TTFRaster::Rasterize()
 		}
 	}
 
-	Fill();
+	//Fill();
 }
 
 void TTFRaster::RasterBesierContour(const TTFParser::Curve & curve)

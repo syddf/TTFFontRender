@@ -30,14 +30,14 @@ int main(int argc , char ** argv )
 	TTFParser::HeadTable ht(of.SearchEntry("head") , buffer , offset);
 	TTFParser::MaxpTable maxp(of.SearchEntry("maxp"), buffer, offset);
 	TTFParser::NameTable name(of.SearchEntry("name"), buffer, offset); //maybe it's not used in rasterizing.
-	TTFParser::HHEATable hhea(of.SearchEntry("hhea"), buffer, offset);
+	TTFParser::HHEATable hhea(of.SearchEntry("hhea"), buffer, offset); //maybe it's not used in rasterizing.
 	TTFParser::CMapTable cmap(of.SearchEntry("cmap"), buffer, offset);
 	TTFParser::LocaTable loca(of.SearchEntry("loca"), buffer, offset, maxp.GetNumGlyphs() , !ht.GetIdxToLocalFormat());
 
 	wchar_t w_c;
 	MultiByteToWideChar(CP_ACP, 0, argv[2], -1, &w_c, 1);
 
-	TTFParser::TTFGlyph glyph(cmap, maxp, loca, hhea, of.SearchEntry("glyf").GetOffset(), of.SearchEntry("hmtx").GetOffset(),w_c,buffer);
+	TTFParser::TTFGlyph glyph(cmap, loca, of.SearchEntry("glyf").GetOffset(), of.SearchEntry("hmtx").GetOffset(),w_c,buffer);
 	TTFRaster ras(glyph.GetGlyph());
 	ras.Rasterize();
 
